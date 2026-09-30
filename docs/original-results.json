@@ -1,0 +1,49 @@
+{
+  "provenance": {
+    "repository": "b23bb1023/MedTech",
+    "commit": "5e85afdf46489024e6df7c699b45e9cd398960b9",
+    "notebook": "MedTech.ipynb",
+    "original_cell_index": 59,
+    "execution_count": 66,
+    "source": "Saved output, transcribed without rerunning"
+  },
+  "original_input_shape": [
+    226,
+    207
+  ],
+  "original_numeric_matrix_shape": [
+    226,
+    143
+  ],
+  "original_predictor_count": 142,
+  "test_size": 0.2,
+  "split_random_state": 42,
+  "target": "SF 36",
+  "target_scale": "Standardized using full-cohort StandardScaler before the split",
+  "caveats": [
+    "Full-cohort preprocessing before train/test split",
+    "Scored questionnaire fields were retained; score-reconstruction relationship is unverified",
+    "CR identifier retained in original matrix",
+    "Exact dependency versions and forest seed unavailable"
+  ],
+  "metrics": [
+    {
+      "model": "Linear regression",
+      "mae": 0.002446122624200298,
+      "mse": 0.00023550784784029822,
+      "r2": 0.9998055163092038
+    },
+    {
+      "model": "Random forest (200 trees)",
+      "mae": 0.27853101426269317,
+      "mse": 0.15641460916529049,
+      "r2": 0.8708319456702569
+    },
+    {
+      "model": "XGBoost",
+      "mae": 0.27329648255577504,
+      "mse": 0.14670408378919805,
+      "r2": 0.87885095154217
+    }
+  ]
+}
