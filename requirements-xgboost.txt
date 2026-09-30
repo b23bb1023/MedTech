@@ -1,0 +1,2 @@
+# Install alongside requirements.txt to run the third original model family.
+xgboost>=2,<4

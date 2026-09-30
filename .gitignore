@@ -1,0 +1,28 @@
+# Private inputs and generated results
+/data/*
+!/data/README.md
+/outputs/
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.pkl
+*.joblib
+
+# Python and Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.pytest_cache/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
