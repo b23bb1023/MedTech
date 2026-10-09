@@ -1,0 +1,4 @@
+# Additional requirements for notebooks/01–04.
+# These ranges are a setup specification, not the original training environment.
+-r requirements.txt
+torch>=2.2,<3

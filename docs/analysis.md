@@ -70,7 +70,7 @@ The source also retained a record identifier, used a high-dimensional matrix rel
 | Presentation | Code-only exploration with repeated dataframe dumps. | Markdown explanations, focused aggregate summaries, and explicit interpretation. |
 | Input | Personal absolute path. | Repository-relative default with `MEDTECH_DATA_PATH` override. |
 | Known identity fields | Six dropped after initial previews; `CR` retained. | Seven known fields dropped immediately; transformer also excludes them defensively. |
-| Public notebook outputs | Identifiable rows, local kernel paths, warnings, and disposed-controller errors. | No saved outputs or execution counts; a checker enforces this. |
+| Public SF 36 notebook outputs | Identifiable rows, local kernel paths, warnings, and disposed-controller errors. | SF 36 outputs remain cleared. Later notebooks retain separately reviewed aggregate outputs guarded by a content manifest. |
 | Missingness selection | Top 30 columns from full cohort, even if a selected count were zero. | All-empty features plus up to 30 features actually containing missing values; learned from training records for supervised fits. |
 | Site vocabulary | Learned from full cohort. | Learned from training records; unseen sites map to `other`. |
 | Prakriti indicators | Overwrote existing Pitta/Kapha fields. | Separate presence fields preserve numeric scores; absent codes stay missing until imputation. |

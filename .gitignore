@@ -5,6 +5,7 @@
 *.csv
 *.tsv
 *.xlsx
+!/results/medtech-results.xlsx
 *.xls
 *.parquet
 *.pkl
