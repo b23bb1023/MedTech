@@ -1,159 +1,142 @@
 # MedTech
 
-### Clinical data exploration, feature engineering, and SF 36 regression
+**Exploratory research into clinical feature representations, ordered targets and predictive associations.**
 
-MedTech is a notebook-based analysis of a clinical masterchart combining demographic measurements, tumour site and staging, questionnaire responses, and Prakriti-related attributes. The work takes a wide, incomplete spreadsheet through data-quality inspection and feature engineering, explores its structure with PCA and K-means, and compares three regression approaches for the spreadsheet's `SF 36` outcome.
+MedTech documents a series of experiments asking whether a clinical masterchart contains useful structure in questionnaire scores, V/P/K-coded attributes and tumour-site features. The work progresses from cleaning, PCA and clustering to shared neural networks, separate T/N prediction, classical and ordinal models, repeated cross-validation and PCA comparisons.
 
-The original saved analysis covered **226 records**, **207 input columns**, and **three regression model families**. This repository presents that work with documented methods, preserved aggregate results, a cleaned notebook, and reusable preprocessing.
+The saved research cohort contains **226 records**. This repository brings together **five notebooks**, a structured results workbook, complete aggregate results and **112 saved confusion matrices**. It is an exploratory analysis project, without a formal paper or an externally validated clinical model.
 
-**Start here:** [analysis notebook](MedTech.ipynb) · [detailed methods and results](docs/analysis.md) · [data dictionary](docs/data-dictionary.md) · [local data setup](data/README.md)
+**Explore:** [experiment guide](docs/experiments.md) · [results and diagnostics](docs/results.md) · [results workbook](results/medtech-results.xlsx) · [Phase 2 handoff](docs/phase-2.md) · [data setup](data/README.md)
 
-## What this project demonstrates
+## Research questions
 
-| Area | Work completed |
+1. **Feature representation:** do scored questionnaire features, V/P/K-coded features or their combination carry more useful associations with the outcomes?
+2. **Target structure:** does treating T and N separately, or using their ordering, reveal information lost in joint TNM classification?
+3. **Model and representation choice:** how do shared neural networks, classical models, ordinal formulations, latent regression and PCA behave on the same small, imbalanced cohort?
+
+These questions motivate follow-up work on feature meaning and relationships. Predictive associations alone do not establish semantic validity, causal effects or clinical usefulness. The original codebook, scoring definitions and an independent cohort are needed for stronger conclusions.
+
+## The experiment series
+
+| Notebook | Work demonstrated |
 |---|---|
-| Data assessment | Inspected dimensions, column types, missingness, and inconsistent category labels in a 207-column export. |
-| Cleaning | Removed identity fields and redundant raw questionnaire columns; selected high-missingness fields for removal. |
-| Feature engineering | Normalized site labels, grouped rare categories, applied one-hot encoding, parsed TNM labels, mapped overall stage, and encoded V/P/K membership. |
-| Numeric preparation | Applied mean imputation and standardization to the feature matrix. |
-| Structure exploration | Computed a 100-component PCA representation, inspected K-means inertia for k=1–9, and explored a five-cluster configuration. |
-| Regression | Compared linear regression, a 200-tree random forest, and XGBoost using an 80/20 split. |
-| Evaluation and interpretation | Reported MAE, MSE, and R², and inspected random forest feature importances. |
+| [SF 36 exploration](MedTech.ipynb) | Masterchart assessment, feature engineering, PCA, K-means and linear/forest/XGBoost regression. Current supervised preprocessing is learned on training data. |
+| [01 · Joint TNM and pain](notebooks/01_joint_tnm_pain.ipynb) | Shared representation, classification/regression heads, dropout, validation-based early stopping and successive feature-set runs. |
+| [02 · Joint-TNM architectures](notebooks/02_joint_tnm_architectures.ipynb) | Big/small MLP comparisons, OneCycleLR, confusion matrices, confidence, entropy and pain variance diagnostics. |
+| [03 · Separate T/N multitask](notebooks/03_tn_multitask.ipynb) | T, N and pain heads; small/big/ultra architecture sweep; training-only rare-class replication; nine saved comparisons. |
+| [04 · Classical, ordinal and PCA](notebooks/04_classical_ordinal_pca.ipynb) | Standard/ordinal classification, five pain regressors, dummy baselines, repeated stratified CV, round/threshold latent decoding and fold-local PCA. |
 
-The project demonstrates an exploratory machine-learning workflow. It does not establish a clinical prediction tool, validated patient subgroups, or causal effects.
+These are successive research iterations with distinct targets and evaluation protocols. The [experiment guide](docs/experiments.md) documents their methods, corrections and differences in depth.
 
-## Data and analysis objective
+## Data and feature settings
 
-The source was a locally stored masterchart CSV. Its saved notebook outputs show 226 rows and 207 columns, including:
+The older export contained 207 columns, including demographic measurements, tumour site/staging, pain, a spreadsheet outcome labeled `SF 36`, questionnaire items and Prakriti-related attributes. The four later notebooks use a final-masterchart schema with scored questionnaire and V/P/K-coded question columns.
 
-- Demographic and measurement fields such as age, weight, height, pulse rate, and sex.
-- Tumour site, a TNM string, overall stage, and pain.
-- The outcome labeled `SF 36`, raw `Q1`–`Q36`, and scored `Value_Q1`–`Value_Q36` fields.
-- Prakriti labels, `Vatta`, `Pitta`, and `Kapha` fields, and coded physical, behavioural, and lifestyle attributes.
-- Identity fields and many spreadsheet-export columns labeled `Unnamed:`.
+| Setting | Selected feature families | Saved input shape |
+|---|---|---|
+| **VALUE** | `Value_Q*` and one-hot tumour-site indicators | 226 × 54 |
+| **VPK** | `V_Q*`, `P_Q*`, `K_Q*` and one-hot tumour-site indicators | 226 × 220 |
+| **ALL** | Both families and one-hot tumour-site indicators | 226 × 256 |
 
-The regression objective was to estimate the numeric `SF 36` column. The repository does not include the score-construction formula, questionnaire version, clinical codebook, cohort recruitment details, or data-collection protocol. Consequently, `SF 36` is described here as the **spreadsheet outcome**, without assuming a standard domain scoring scale.
+Site features occur in every setting. These counts describe the recorded cohort, not fixed requirements for a new dataset.
 
-The source dataset is **not included**. Re-running the analysis requires an authorized local copy with the expected schema. The MIT license covers this repository's software and documentation; it does not grant access to the dataset or rights to third-party questionnaire material.
+Joint-TNM experiments use 21 normalized T/N/M combinations. Later experiments predict T1–T4 and N0–N3 separately, alongside continuous pain regression. They do not predict 21 overall cancer stages. Pain was min-max scaled in these four iterations; its errors below use **normalized pain units**.
 
-## Workflow
+The private clinical CSV is not distributed. Repository licensing does not grant dataset access or rights to third-party questionnaire content. [Data setup](data/README.md) explains both schemas and local configuration.
 
-### 1. Inspect and clean the masterchart
+## Selected recorded findings
 
-The original notebook reviewed dataframe shapes, dtypes, missing-value counts, and categorical frequencies. It removed six identifying fields, dropped the 30 columns with the most missing entries, and removed the raw `Q1`–`Q36` columns while retaining their scored counterparts.
+All values come from saved research outputs and were **not recomputed during cleanup**. Supporting files preserve complete results, precision available in each source, source references and unresolved run matches.
 
-The cleaned notebook removes the known `CR` record identifier as well, avoids row-level dataframe previews, and keeps inputs in an ignored local data directory. Saved notebook outputs and execution counts are cleared before publication.
+### Pain: compare feature representations
 
-### 2. Engineer interpretable numeric features
+Notebook 04 evaluates five regression families using a seed-42 80/20 split. These examples show the leading recorded R² within each setting:
 
-- **Site:** lowercase and trim labels; group categories occurring fewer than five times into `other`; one-hot encode with a reference category. The original workflow did not merge semantic synonyms such as `glottis` and `glottic`.
-- **TNM:** extract T, N, and M values, reducing letter substages to their parent numeric categories. The inherited `Tumorsize` name means T category, not a measured tumour dimension.
-- **Overall stage:** preserve the original numeric mapping I→6, II→5, III→4, IVA→3, IVB→2, IVC→1. This is an encoding convention with larger numbers for earlier stage.
-- **Prakriti:** normalize V/P/K codes and create binary membership indicators. The cleaned version names these `Vata_present`, `Pitta_present`, and `Kapha_present`, preserving the pre-existing numeric scores.
-- **Missing values and scale:** filter highly incomplete features, mean-impute remaining missing values, and standardize inputs.
+| Features | Model | MAE ↓ | RMSE ↓ | R² ↑ |
+|---|---|---:|---:|---:|
+| ALL | Ridge | 0.103829 | 0.129830 | 0.670133 |
+| VALUE | ElasticNet | 0.114817 | 0.139555 | 0.618865 |
+| VPK | ElasticNet | 0.199599 | 0.242839 | −0.154056 |
 
-For supervised models, site categories, missingness selection, imputation, and scaling are now learned inside pipelines using **training records only**. Mean imputation and treating coded responses as numeric remain exploratory choices requiring codebook review.
+Questionnaire scores and the combined representation show the clearest pain-regression association in this split. The combined representation supports feature-ablation follow-up; it does not prove every added feature contributes. VPK alone did not improve on a constant predictor in this evaluation. The complete five-model comparison remains in the workbook and [results appendix](docs/results.md).
 
-### 3. Explore feature-space structure
+The target and some inputs were scaled before splitting in these historical iterations. Questionnaire/target content overlap has not been ruled out. Treat the scores as within-cohort exploratory evidence; fold-local preprocessing and repeated evaluation are the next step.
 
-The original notebook fitted PCA with 100 components. It also fitted K-means directly on the standardized feature matrix, evaluated inertia for k=1–9, and selected k=5 for exploration. PCA was computed separately; it was **not** used as input to the clustering or regression models.
+### N classification: compare against baselines
 
-![Original saved K-means elbow plot for k=1 to 9](docs/assets/original-elbow.png)
+The later experiments use ALL features for N prediction with five-fold stratified CV repeated three times. Balanced accuracy and macro F1 are more informative than accuracy alone for this imbalanced task.
 
-*This figure is preserved from the original saved run. It shows the inertia trend, but does not establish that five clusters are optimal or clinically meaningful. The original exploratory matrix included the outcome and `CR`; the cleaned exploratory branch excludes both, so its plot will differ.*
-
-The cleaned notebook adds a cumulative PCA explained-variance plot and aggregate cluster counts. These are generated when local data is supplied; no new cohort findings are asserted here.
-
-### 4. Compare regression approaches
-
-The original regression used 142 predictors, an 80/20 random split with seed 42, and a standardized `SF 36` target. With 226 records, the split yields 180 training and 46 test records.
-
-| Model | Original configuration |
-|---|---|
-| Linear regression | `LinearRegression()` |
-| Random forest | `RandomForestRegressor(n_estimators=200)` |
-| XGBoost | `XGBRegressor()` |
-
-The original forest had no explicit random seed, and the exact package versions were not recorded. The cleaned notebook adds explicit seeds, a mean-prediction baseline, and two feature settings using the same hold-out split:
-
-1. **Without scored questionnaire items:** the primary exploratory prediction setting excludes `Value_Q1`–`Value_Q36`.
-2. **With scored questionnaire items:** a separate reconstruction comparison retains those fields to examine the original feature design.
-
-The cleaned notebook predicts the outcome in its original spreadsheet units. Its newly generated MAE/MSE values therefore use a different scale from the historical results below.
-
-## Original recorded results
-
-These are transcribed from the original notebook's saved evaluation output at commit `5e85afdf46489024e6df7c699b45e9cd398960b9`. They have **not been recomputed** during the repository cleanup. Full-precision values and provenance are recorded in [original-results.json](docs/original-results.json).
-
-| Model | MAE ↓ | MSE ↓ | R² ↑ |
+| Method | Accuracy | Balanced accuracy | Macro F1 |
 |---|---:|---:|---:|
-| Linear regression | 0.002446 | 0.000236 | 0.999806 |
-| Random forest, 200 trees | 0.278531 | 0.156415 | 0.870832 |
-| XGBoost | 0.273296 | 0.146704 | 0.878851 |
+| Most-frequent baseline | 0.469082 | 0.250000 | 0.159634 |
+| Stratified random baseline | 0.352657 | 0.267199 | 0.262147 |
+| Standard random forest | 0.430692 | 0.287345 | 0.274791 |
+| Latent SVR, threshold decoding | 0.445539 | 0.311979 | 0.306685 |
+| Ordinal elastic-net logistic model, PCA 95% | 0.320193 | 0.314722 | 0.268810 |
 
-MAE is in standardized outcome units; MSE is in squared standardized outcome units. R² is dimensionless. Linear regression recorded the strongest fit in this saved run; XGBoost recorded slightly lower errors than the forest.
+Latent threshold decoding improves the recorded class-balanced measures over dummy baselines while retaining the stronger macro F1 of these selected methods. PCA/ordinal modeling slightly raises balanced accuracy but reduces macro F1 relative to that SVR result. This is a modest candidate signal for follow-up. T prediction in the available repeated-CV results does not show a consistent advantage over the stratified dummy baseline.
 
-**Interpretation matters:** the original imputer and scaler were fitted before the train/test split, exposing them to the held-out distribution. Its predictors also included the record identifier and scored questionnaire items. If those items were used to calculate `SF 36`, the near-perfect linear fit may reflect reconstruction of an existing score. That is a hypothesis from the feature design, not a confirmed scoring relationship. The scoring formula is unavailable, so these values should remain historical exploratory results rather than evidence of independent clinical prediction.
+![Final-fold N confusion matrices: most-frequent baseline and latent SVR threshold decoding](docs/assets/n-confusion-comparison.png)
 
-## Run the cleaned notebook
+*Rows are true N labels; columns are predictions. These show the same final CV fold, with 45 records. They illustrate class coverage and are not pooled matrices for all 15 folds or the mean CV scores above.*
 
-Use Python **3.10 or later** and launch Jupyter from the repository root.
+### What architecture and PCA comparisons add
+
+Neural experiments document how decomposing a sparse joint label changes the modeling problem and how architecture size trades off classification and pain regression. Complete matrices, confidence/entropy and residual-variance summaries remain available.
+
+The PCA sweep compares 10, 15, 20, 30 components and 95% explained variance with standard, ordinal and latent approaches. PCA is fitted within training folds. Historical latent PCA summaries pool two decoding means; their reported SD is variation between those means, **not fold uncertainty**. Future runs now distinguish round and threshold decoding.
+
+Early joint-TNM experiments replicated rare classes before splitting, so copies may overlap training and test sets. They remain documented developmental runs. Separate-target and CV experiments restrict replication to training subsets.
+
+### Earlier SF 36 exploration
+
+The first notebook inspected missingness/category inconsistencies, engineered site/TNM/Prakriti features, computed PCA, explored K-means inertia for k=1–9, and compared linear regression, a 200-tree random forest and XGBoost.
+
+![Original saved K-means inertia curve](docs/assets/original-elbow.png)
+
+Its near-perfect saved linear fit is documented in [the original analysis](docs/analysis.md) and [exact historical metrics](docs/original-results.json). Scored questionnaire items were predictors and the outcome formula is unavailable; score reconstruction is a plausible explanation requiring verification. The current notebook separates prediction without scored items from a reconstruction comparison and excludes known identifiers. Historical and new-run errors use different outcome scales.
+
+## Inspect the complete results
+
+The [cleaned workbook](results/medtech-results.xlsx) separates neural runs/diagnostics, held-out classification, pain regression, CV, PCA, Phase 2 records and all confusion counts. Empty spacers and repeated display summaries are removed from working tables. Its ledger retains **all 1,323 original numeric entries**, including rounded duplicates, with source coordinates.
+
+Machine-readable records are in [recorded-results.json](results/recorded-results.json), [confusion-matrices.json](results/confusion-matrices.json) and [workbook-metric-ledger.json](results/workbook-metric-ledger.json). Different runs remain distinct.
+
+**12 real RF/SVM classification results lack located source notebooks**, and nine alternate multitask configurations differ from notebook 03's saved run. They are retained for [Phase 2](docs/phase-2.md). Top-ten outlier records are absent from available notebooks and workbook; recovering their predictions is tracked there too.
+
+## Run locally
+
+Use Python 3.10 or later and start Jupyter from the repository root:
 
 ```bash
 git clone https://github.com/b23bb1023/MedTech.git
 cd MedTech
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pip install -r requirements-xgboost.txt
-python -m ipykernel install --user --name medtech --display-name "Python (MedTech)"
-jupyter lab MedTech.ipynb
+python -m pip install -r requirements-research.txt
+jupyter lab
 ```
 
-On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in PowerShell. Select the **Python (MedTech)** kernel in Jupyter.
+On Windows, activate `.venv\Scripts\Activate.ps1` in PowerShell. PyTorch is needed for notebooks 01–03; notebook 04 uses base scientific packages. For only SF 36, install `requirements.txt` and optionally `requirements-xgboost.txt`.
 
-Place the CSV at `data/medtech_masterchart.csv`. To use another location, set `MEDTECH_DATA_PATH` before starting Jupyter:
+| Analysis | Default private input | Environment override |
+|---|---|---|
+| SF 36 notebook | `data/medtech_masterchart.csv` | `MEDTECH_DATA_PATH` |
+| Notebooks 01–04 | `data/medtech_final.csv` | `MEDTECH_FINAL_DATA_PATH` |
 
-```bash
-export MEDTECH_DATA_PATH="/path/to/authorized/masterchart.csv"
-jupyter lab MedTech.ipynb
-```
+Run cells in order. Dependency ranges support setup; they do not reproduce the unknown original environment. Full neural/PCA sweeps can take substantial time. Notebook 01's additional alternative is opt-in with `RUN_ALTERNATIVE`.
 
-PowerShell equivalent: `$env:MEDTECH_DATA_PATH = "C:\path\to\authorized\masterchart.csv"`.
+Useful saved aggregate outputs remain in notebooks 01–04 for GitHub previews. Personal paths, record previews, exposed arrays and raw-data exports were removed. Execution counts were cleared because they did not reliably describe historical execution order. A content manifest guards reviewed outputs; new outputs require review before publication.
 
-The XGBoost requirements file is optional: without it, the notebook explicitly skips that model and runs the other comparisons. The dependency ranges are a setup specification, not a lockfile for the original environment.
-
-Run cells in order. Only aggregate summaries and charts are displayed. Optional aggregate exports go to ignored `outputs/`; inspect them before sharing.
-
-## Repository guide
-
-| Path | Purpose |
-|---|---|
-| `MedTech.ipynb` | Documented analysis workflow with cleared outputs and portable local input configuration. |
-| `medtech/preprocessing.py` | Reusable training-aware feature transformer. |
-| `docs/analysis.md` | Original methods, result provenance, changes, limitations, and future work. |
-| `docs/data-dictionary.md` | Field groups, explicit encodings, and original feature inventory. |
-| `docs/original-results.json` | Exact saved metrics from the original run. |
-| `docs/assets/original-elbow.png` | Original aggregate elbow figure. |
-| `data/README.md` | Expected local data format and handling instructions. |
-| `requirements*.txt` | Notebook dependencies and optional XGBoost dependency. |
-| `scripts/check_notebook.py` | Notebook syntax, output, and personal-path checks; optional output clearing. |
-| `tests/` | Synthetic-data checks for preprocessing and pipeline behaviour. |
-| `.github/workflows/checks.yml` | Automated checks without accessing the clinical dataset. |
-| `CONTRIBUTING.md` | Contribution and safe notebook-sharing workflow. |
-| `LICENSE` | MIT license. |
-
-## Validation and remaining work
+## Repository checks
 
 ```bash
-python -m unittest discover -s tests -v
 python scripts/check_notebook.py
+python -m unittest discover -s tests -v
 ```
 
-Tests use generated data to verify feature handling and pipeline behaviour. They do not reproduce the clinical results. The cleaned notebook has not been executed on the source cohort because the CSV is absent from the repository.
-
-Next steps are to verify the outcome's scoring formula and coded field meanings, review feature availability at prediction time, check repeated-person records, evaluate within cross-validation folds, and assess cluster stability. External validation and appropriate data governance would be required before clinical use. See [the detailed discussion](docs/analysis.md#limitations-and-next-steps).
+Checks cover notebook syntax/reviewed outputs, synthetic-data preprocessing, result/matrix consistency and workbook retention. They do not rerun the private cohort. See [contribution guidance](CONTRIBUTING.md) for reviewing new outputs.
 
 ## License
 
-Software and documentation are available under the [MIT License](LICENSE). Dataset access and third-party material remain subject to their own permissions.
+Code and documentation use the [MIT License](LICENSE). Clinical data and third-party questionnaire material remain subject to their own permissions.

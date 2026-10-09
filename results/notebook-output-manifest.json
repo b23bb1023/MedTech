@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "policy": "Only reviewed aggregate outputs are retained. Any newly executed output requires a separate privacy review.",
+  "notebooks": {
+    "notebooks/01_joint_tnm_pain.ipynb": {
+      "research-002": "53c2afe111d0a9f348e430fcbc7132c625b03a1471aa5eb0a0738df425a9c1aa",
+      "research-004": "7bc4624ba840be9a8aad981fe157c8f4dfaa63ab5b689645473883ff869a9e9b",
+      "research-005": "ee3fce7b3bb39d2e7c4d88ddf9543a6db0e24762a19106fb3072e72a01399819",
+      "research-010": "dc805b516508e0be5539d72a031cdcd2ba5b03b06dd5546dddb1de68a04ef4ba",
+      "research-011": "d3b1986f4d85f3fe7518acdfc2074bdd162026d2e8a134d210ed9f5abe8c920a",
+      "research-012": "c4930c6bec506dcf898e5db1491926d95e22bdbbae11adfd5ba1e273e5283ccb",
+      "research-013": "36e4d9556a527ab03f8542c638438e584d3901cb8b118aa4769b411e26267f4a",
+      "research-014": "8752256c5c9b5e99a26b52d67f5271d495acd2c556d41a1aa06451d84a6066e9",
+      "research-017": "8faeab31f55ea3cba964e635d475569647aa50beb5a28784c6e97c5f0408c0ed",
+      "research-020": "619bc72dc256c2f63992569f6faec93d99d4f235ee672818c82b3a11f78f7d4b",
+      "research-021": "6b2755d312fb0719a8b3c60e9146a69fee65faf1d5a9361a4a2a250fbed416e2",
+      "research-025": "6e4266dd6ba1b58f00e75b8010e34bb4b0a7a641f72e763778f9f50a1d03f7a2",
+      "research-026": "82dfb61d90e42dfebb4ed98e668ad780d4238c8596c665daa2aebbca4dae8389",
+      "research-027": "7c6a11f04e0442c9382e45f2b81ef0aa8c6ae9819006976e5be7504f616cd9ab",
+      "research-028": "aaa22999d9c986b021a159cd519b9f30aa386872c69ad92f92d11733541a5464",
+      "research-029": "80e9216fae51c7ad81f9d72cb44199040a1f0d64a21db46c132bda1e0bbf5bb0"
+    },
+    "notebooks/02_joint_tnm_architectures.ipynb": {
+      "research-002": "53c2afe111d0a9f348e430fcbc7132c625b03a1471aa5eb0a0738df425a9c1aa",
+      "research-004": "7bc4624ba840be9a8aad981fe157c8f4dfaa63ab5b689645473883ff869a9e9b",
+      "research-005": "ee3fce7b3bb39d2e7c4d88ddf9543a6db0e24762a19106fb3072e72a01399819",
+      "research-010": "dc805b516508e0be5539d72a031cdcd2ba5b03b06dd5546dddb1de68a04ef4ba",
+      "research-011": "d3b1986f4d85f3fe7518acdfc2074bdd162026d2e8a134d210ed9f5abe8c920a",
+      "research-012": "c4930c6bec506dcf898e5db1491926d95e22bdbbae11adfd5ba1e273e5283ccb",
+      "research-013": "36e4d9556a527ab03f8542c638438e584d3901cb8b118aa4769b411e26267f4a",
+      "research-014": "8752256c5c9b5e99a26b52d67f5271d495acd2c556d41a1aa06451d84a6066e9",
+      "research-017": "8faeab31f55ea3cba964e635d475569647aa50beb5a28784c6e97c5f0408c0ed",
+      "research-020": "619bc72dc256c2f63992569f6faec93d99d4f235ee672818c82b3a11f78f7d4b",
+      "research-023": "e89c6f1679f571f43bf0f0ca60d2390d2f84d6fdfec796f7363d0959a7b0fcf4",
+      "research-026": "1160e1dd470a5ad968418d625d5edc800db2f542b7c697e7992951ab043ceba8",
+      "research-027": "ed1525f6412d15fc3234f197a48caed11a0ce437186ab37f767f367d8308f985",
+      "research-028": "6aa7aa13757c33e245c0aec9199606c5732dbcdad9a78c23c08b776e5336619c",
+      "research-029": "e6835c9512a08c75573ccc023a6c510cca26589a50f104904b4769aeb1296fe9",
+      "research-030": "dec3720e6337c6ab8bf672924186d9212751154b0427465db31504ed564cc037",
+      "research-031": "f39eebec19c70768a1fa5f6cea55aacffb87164c570a51847610a793dc03725e"
+    },
+    "notebooks/03_tn_multitask.ipynb": {
+      "research-002": "53c2afe111d0a9f348e430fcbc7132c625b03a1471aa5eb0a0738df425a9c1aa",
+      "research-004": "7bc4624ba840be9a8aad981fe157c8f4dfaa63ab5b689645473883ff869a9e9b",
+      "research-005": "ee3fce7b3bb39d2e7c4d88ddf9543a6db0e24762a19106fb3072e72a01399819",
+      "research-009": "dc805b516508e0be5539d72a031cdcd2ba5b03b06dd5546dddb1de68a04ef4ba",
+      "research-010": "d3b1986f4d85f3fe7518acdfc2074bdd162026d2e8a134d210ed9f5abe8c920a",
+      "research-011": "c4930c6bec506dcf898e5db1491926d95e22bdbbae11adfd5ba1e273e5283ccb",
+      "research-012": "36e4d9556a527ab03f8542c638438e584d3901cb8b118aa4769b411e26267f4a",
+      "research-013": "014728a322ba63cab3bf73d1b464dd1af07715123c29c6612aed1eafd28d5a89",
+      "research-015": "df35746c96cf0b666de0535b670bce72a7e820b766cc1c1bfd29822e4bd075ec",
+      "research-018": "25702fd930041e867ba20f6bc4c02e331a11d8cb0d45e71891add55e404a0579",
+      "research-021": "e89c6f1679f571f43bf0f0ca60d2390d2f84d6fdfec796f7363d0959a7b0fcf4",
+      "research-024": "9d6087406227d47e0c2af60788f08b67154878f209f50c3c9bdf2fe550140983"
+    },
+    "notebooks/04_classical_ordinal_pca.ipynb": {
+      "research-002": "53c2afe111d0a9f348e430fcbc7132c625b03a1471aa5eb0a0738df425a9c1aa",
+      "research-004": "7bc4624ba840be9a8aad981fe157c8f4dfaa63ab5b689645473883ff869a9e9b",
+      "research-005": "ee3fce7b3bb39d2e7c4d88ddf9543a6db0e24762a19106fb3072e72a01399819",
+      "research-009": "dc805b516508e0be5539d72a031cdcd2ba5b03b06dd5546dddb1de68a04ef4ba",
+      "research-010": "d3b1986f4d85f3fe7518acdfc2074bdd162026d2e8a134d210ed9f5abe8c920a",
+      "research-011": "c4930c6bec506dcf898e5db1491926d95e22bdbbae11adfd5ba1e273e5283ccb",
+      "research-012": "36e4d9556a527ab03f8542c638438e584d3901cb8b118aa4769b411e26267f4a",
+      "research-013": "014728a322ba63cab3bf73d1b464dd1af07715123c29c6612aed1eafd28d5a89",
+      "research-015": "df35746c96cf0b666de0535b670bce72a7e820b766cc1c1bfd29822e4bd075ec",
+      "research-018": "25702fd930041e867ba20f6bc4c02e331a11d8cb0d45e71891add55e404a0579",
+      "research-021": "28d40bb934d172adfab357cd09f3929c9fac3d261ec3af24914352c68ad591dd",
+      "research-022": "b1056117bc46ed50f03a4fc29431ebd02294f75a1098303ca4b1c9f61c6fee07",
+      "research-023": "d058fbc8c6e4b717eef3c4293f63088de5eb7464e712afb97913e5ecb82e16a2"
+    }
+  }
+}

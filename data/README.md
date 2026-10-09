@@ -4,9 +4,11 @@ The clinical source CSV is not distributed in this repository. Use only a copy y
 
 ## Location
 
-Save the input as `data/medtech_masterchart.csv`, or set `MEDTECH_DATA_PATH` before starting Jupyter. Files in this directory other than this guide are ignored by Git. CSV, spreadsheet, serialized-model, and generated-output files are also ignored elsewhere in the repository.
+For SF 36, use `data/medtech_masterchart.csv` or `MEDTECH_DATA_PATH`. For notebooks 01–04, use `data/medtech_final.csv` or `MEDTECH_FINAL_DATA_PATH`. Launch Jupyter from the repository root. The exports have different schemas; do not assume one replaces the other.
 
-## Expected schema
+Private inputs, serialized models and generated outputs are ignored. The reviewed aggregate workbook at `results/medtech-results.xlsx` is an explicit exception.
+
+## SF 36 schema
 
 Use a UTF-8 CSV with a header row. The original export had 226 records and 207 columns; these dimensions are historical observations, not requirements for a new input.
 
@@ -24,8 +26,22 @@ Use a UTF-8 CSV with a header row. The original export had 226 records and 207 c
 
 `Site`, `staging (TNM)`, `Staging`, `Prakriti`, and the outcome are required columns. Review [the data dictionary](../docs/data-dictionary.md) for inherited encodings and unresolved meanings. Do not rename or infer the clinical meaning of coded fields without the source codebook.
 
+## Final-masterchart schema for notebooks 01–04
+
+| Fields | Expected representation |
+|---|---|
+| `staging (TNM)` | Text with supported T/N labels; notebooks 01–02 also require M for a joint label. |
+| `Pain`, `weight`, `height`, `Pulse rate` | Numeric; records missing these are filtered before historical scaling. |
+| `Site` | Tumour-site category included in every feature setting. |
+| `Value_Q*` | Numeric scored questionnaire fields; `_final` versions take preference. |
+| `V_Q*`, `P_Q*`, `K_Q*` | Numeric V/P/K-coded question fields; meanings require the codebook. |
+
+Names are normalized and duplicate column labels removed after final-column selection. Saved shapes were 226×54, 226×220 and 226×256; these are observations, not requirements. Inspect the schema without displaying patient rows.
+
+Full-cohort min-max scaling and zero-filling selected features are historical choices retained to explain saved results. Review them before confirmatory evaluation.
+
 ## Working and sharing
 
 The notebook removes known identity columns before aggregate inspection, but numeric traits and rare combinations can still be sensitive. Keep the source file, row-level predictions, and model artifacts local. A removed name column is not a guarantee of anonymization.
 
-Before committing an executed notebook, clear outputs with `python scripts/check_notebook.py --clear` and inspect the diff. Submit aggregate results only after checking that they are appropriate to publish. Data and third-party questionnaire rights are separate from the repository's software license.
+Notebooks 01–04 retain reviewed historical aggregate outputs. The manifest rejects new/changed outputs until reviewed. Clear one locally executed notebook with `python scripts/check_notebook.py path/to/notebook.ipynb --clear` when its outputs should not be shared. Inspect the diff. Data and questionnaire rights remain separate from software licensing.
